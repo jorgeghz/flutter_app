@@ -1,57 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:jorgegflutterapp/question.dart';
+import 'package:jorgegflutterapp/answer.dart';
+import 'package:jorgegflutterapp/quiz.dart';
+import 'package:jorgegflutterapp/result.dart';
+
 void main() => runApp(FlutterApp());
 
 class FlutterApp extends StatefulWidget {
 
+
+
   @override
   State<StatefulWidget> createState() {
-    return FlutterAppState();
+    return _FlutterAppState();
   }
 }
 
-class FlutterAppState extends State<FlutterApp>{
-  var questionIndex=0;
+class _FlutterAppState extends State<FlutterApp>{
+  var _questionIndex=0;
+
+  static const _questions=[
+    {
+      'questionText':'What Is Your Favorite Color?',
+      'answers':['Blue','Red','Yellow','Orange']
+    },
+    {
+      'questionText':'What Is Your Favorite Pet?',
+      'answers':['Cats','Rabbits','Dogs','Ducks']
+    },
+    {
+      'questionText':'What Is Your Favorite Car Brand?',
+      'answers':['VW','Toyota','BMW','Tesla']
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
-    var questions=[
-      'What is your favorite color?',
-      'What is your favorite pet'
 
-    ];
    return MaterialApp(home: Scaffold(
      appBar: AppBar(
-         title: Text("Ahorita Vemos Que Pedo"),
+         title: Text("Ahorita Vemos Que Pedo",textAlign: TextAlign.center,),
+
          backgroundColor: Colors.lightGreen
      ),
-     body: Column(
-       children: [
-         Text(questions[questionIndex]),
-         RaisedButton(
-             child: Text("Es harina"),
-             onPressed: answerQuestion
-         ),
-         RaisedButton(
-             child: Text("No es harina"),
-             onPressed: ()=>print('Selected 2')
-         ),
-         RaisedButton(
-             child: Text("Otra cosa"),
-             onPressed: answerQuestion
-         )
-       ],
-     )
+     body: _questionIndex < _questions.length
+         ? Quiz(answerQuestion: this._answerQuestion, questionIndex: this._questionIndex, questions: _questions,)
+          : Result(_reset)
 
    ));
   }
 
-  void answerQuestion(){
-    //if(questionIndex<questions.)
+  void _reset(){
     setState(() {
-      questionIndex=questionIndex+1;
+      _questionIndex = 0;
+    });
+  }
+
+  void _answerQuestion(){
+    setState(() {
+      _questionIndex=_questionIndex+1;
 
     });
-    print(questionIndex);
+
+    if(_questionIndex < _questions.length-1){
+
+      print(_questionIndex);
+    }
+    else {
+      print('There are no more questions');
+
+    }
+
+
 
   }
 
